@@ -18,9 +18,10 @@ const styles = StyleSheet.create({
   InputStyle: {
     backgroundColor: '#fff',
     borderRadius: 28.5,
-    marginTop: 20,
     fontSize: 16,
     fontWeight: '600',
+    height: 55,
+    width: '85%',
   },
   ForgetPasswordBtn: {
     backgroundColor: 'transparent',

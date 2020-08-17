@@ -1,6 +1,6 @@
 import React, {useState, useReducer, useEffect, useCallback} from 'react';
 
-import {View, Image, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 
 import Styles from './styles';
 
@@ -14,6 +14,8 @@ import {useSelector, useDispatch} from 'react-redux';
 
 import * as Auth from '../../../Store/Actions/Auth';
 
+import * as RootNavigation from '../../../Navigation/RootNavigation';
+
 const SignUp = (props) => {
   const dispatch = useDispatch();
 
@@ -25,6 +27,10 @@ const SignUp = (props) => {
 
   let [MessagePopUp, setMessagePopUp] = useState('');
 
+  let [secureTextIcon, setsecureTextIcon] = useState('eye-off-outline');
+
+  let [secureText, setsecureText] = useState(true);
+
   const setUserProfile = (userState) => {
     return {
       userData: userState,
@@ -33,23 +39,25 @@ const SignUp = (props) => {
   };
 
   useEffect(() => {
-    if (UserInfo.Status == 200) {
+    if (UserInfo.Status == 201) {
       IsLoadingModalVisible(false);
       dispatch(setUserProfile({...UserInfo, Status: 0}));
-
       // props.navigation.dispatch(StackActions.replace('TabBottomNavigator'));
-      console.log('Logged');
+      RootNavigation.navigate('OnBoarding');
     } else if (UserInfo.Status == 50) {
+      dispatch(setUserProfile({Status: 0}));
       IsLoadingModalVisible(false);
-
       setMessagePopUp('No internet Connection');
-
       setVisiabiltyPopUp(true);
-    } else if (UserInfo.Status == 401) {
+    } else if (UserInfo.Status == 409) {
+      dispatch(setUserProfile({Status: 0}));
       IsLoadingModalVisible(false);
-
-      setMessagePopUp('wrong email or password');
-
+      setMessagePopUp('Username not available');
+      setVisiabiltyPopUp(true);
+    } else if (UserInfo.Status == 422) {
+      dispatch(setUserProfile({Status: 0}));
+      IsLoadingModalVisible(false);
+      setMessagePopUp('E-mail already exist');
       setVisiabiltyPopUp(true);
     }
   }, [UserInfo]);
@@ -70,6 +78,7 @@ const SignUp = (props) => {
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     Account: {
+      userName: '',
       Email: '',
       Password: '',
       ErrorEmail: false,
@@ -88,7 +97,7 @@ const SignUp = (props) => {
   const OnChangeEmail = (text) => {
     if (validateEmail(text.trim())) {
       ChangeState({
-        value: text.trim(),
+        value: text.trim().toLowerCase(),
         input: 'Email',
       });
       ChangeState({
@@ -107,6 +116,17 @@ const SignUp = (props) => {
     }
   };
 
+  const OnChangeUserName = (text) => {
+    ChangeState({
+      value: text.trim(),
+      input: 'UserName',
+    });
+    ChangeState({
+      value: false,
+      input: 'ErrorUserName',
+    });
+  };
+
   const OnChangePassword = (text) => {
     if (formState.Account.ErrorPassword) {
       ChangeState({
@@ -120,7 +140,7 @@ const SignUp = (props) => {
     });
   };
 
-  const OnLogin = () => {
+  const OnSignUp = () => {
     if (!formState.Account.Email.length > 0 || formState.Account.ErrorEmail) {
       ChangeState({
         value: true,
@@ -132,6 +152,7 @@ const SignUp = (props) => {
         value: true,
         input: 'ErrorPassword',
       });
+    } else if (formState.Account.ErrorUserName) {
     } else {
       //call Api
       ChangeState({
@@ -140,9 +161,11 @@ const SignUp = (props) => {
       });
       IsLoadingModalVisible(true);
       dispatch(
-        Auth.SignInAuth({
+        Auth.SignUpAuth({
           Email: formState.Account.Email.toLowerCase(), // email in this case not sensitive
           Password: formState.Account.Password,
+          UserName: formState.Account.UserName.toLowerCase(),
+          Photo: 'https://source.unsplash.com/1024x768/?nature',
         }),
       );
     }
@@ -158,51 +181,56 @@ const SignUp = (props) => {
         <View style={{marginTop: 40}}>
           <Text style={Styles.txtUserName}>Username</Text>
           <Input
-            Error={formState.Account.ErrorEmail}
             PlaceHolder={'Create your username'}
-            ErrorTitle={'In-valid Email'}
-            onChangeText={(text) => OnChangeEmail(text)}
+            onChangeText={(text) => OnChangeUserName(text)}
             maxLength={35}
             InputStyle={Styles.InputStyle}
           />
         </View>
+
         <View style={{marginTop: 51}}>
           <Text style={Styles.txtUserName}>E-mail</Text>
-
           <Input
-            Error={formState.Account.ErrorPassword}
-            ErrorTitle={'In-valid Password'}
-            secureTextEntry
+            Error={formState.Account.ErrorEmail}
+            ErrorTitle={'In-valid Email'}
             maxLength={35}
             PlaceHolder={'Enter your e-mail'}
-            onChangeText={(text) => OnChangePassword(text)}
+            onChangeText={(text) => OnChangeEmail(text)}
             InputStyle={[Styles.InputStyle]}
           />
         </View>
 
         <View style={{marginTop: 51}}>
           <Text style={Styles.txtUserName}>Password</Text>
-
           <Input
             Error={formState.Account.ErrorPassword}
             ErrorTitle={'In-valid Password'}
-            secureTextEntry
+            secureTextEntry={secureText}
             maxLength={35}
             PlaceHolder={'Create your password'}
             onChangeText={(text) => OnChangePassword(text)}
             InputStyle={[Styles.InputStyle]}
+            IconName={secureTextIcon}
+            changeIcon={() => {
+              setsecureText(!secureText);
+              if (secureText) {
+                setsecureTextIcon('eye-outline');
+              } else {
+                setsecureTextIcon('eye-off-outline');
+              }
+            }}
           />
         </View>
         <Button
           title={'Sign Up'}
           Customstyle={Styles.LoginBtn}
-          onPress={OnLogin}
+          onPress={OnSignUp}
         />
         <PopUp
           visible={PopupModel}
           message={MessagePopUp}
           LeftBtnName={'OK'}
-          topIcon={Icons.WrongPopUp}
+          topIcon={Icons.Failed}
           LeftBtnFunction={PopupactionFunction}
         />
       </ScrollView>

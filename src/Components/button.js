@@ -28,6 +28,7 @@ const Button = React.memo(
     IconsRightName,
     IconsRightColor,
     IconsRightSize,
+    IconsImage,
   }) => {
     return (
       <TouchableOpacity
@@ -38,6 +39,7 @@ const Button = React.memo(
         {IconLeftName && (
           <Icon color={IconColor} size={IconSize} name={IconLeftName} />
         )}
+        {IconsImage && <Image source={IconsImage} style={styles.IconImage} />}
         {title && (
           <Text
             style={[styles.buttonTextStyle, BtnTitleStyle]}
@@ -93,6 +95,10 @@ const styles = StyleSheet.create({
     padding: 5,
     fontWeight: 'bold',
     letterSpacing: 1,
+  },
+  IconImage: {
+    width: 24,
+    height: 24,
   },
 });
 export {Button};

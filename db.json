@@ -1,0 +1,48 @@
+{
+  "Users": [
+    {
+      "id": "5e808ea71fd9400dc009031ade8",
+      "UserName": "minasamir11",
+      "Name": "Mina samir shafik",
+      "Email": "menasamer11@gmail.com",
+      "Password": "Mm015015",
+      "Photo": "https://source.unsplash.com/1024x768/?nature"
+    },
+    {
+      "id": "5e808ea71fd9400d00921ad8",
+      "UserName": "osamamaher1",
+      "Name": "Osama Maher",
+      "Email": "osamamaher@gmail.com",
+      "Password": "Mm015015",
+      "Photo": "https://source.unsplash.com/1024x768/?tree"
+    },
+    {
+      "id": "5e808ea71fdd9400dc00931aad8",
+      "UserName": "ibrahemsamir",
+      "Name": "Ibrhem Samir",
+      "Email": "ibrhemsamir@gmail.com",
+      "Password": "Mm015015",
+      "Photo": "https://source.unsplash.com/1024x768/?nature"
+    },
+    {
+      "id": "5e808ea71fd9400dce00951add8",
+      "UserName": "mahmoud10",
+      "Name": "Mahmoud Nabil",
+      "Email": "mahmoud@gmail.com",
+      "Password": "Mm015015",
+      "Photo": "https://source.unsplash.com/1024x768/?tree"
+    }
+  ],
+  "Booking": [
+    {
+      "id": "2",
+      "userID": "dummy",
+      "place_id": "dummy",
+      "hotelName": "dummy",
+      "photoURL": "dummy",
+      "vicinity": "dummy",
+      "startdate": "dummy",
+      "enddate": "dummy"
+    }
+  ]
+}

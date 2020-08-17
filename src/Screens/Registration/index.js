@@ -22,7 +22,6 @@ const SignIn = (props) => {
       setSelectedTab(index);
       setComponent(<LogIn />);
     } else {
-      console.log(index);
       setSelectedTab(index);
       setComponent(<SignUp />);
     }
@@ -37,6 +36,7 @@ const SignIn = (props) => {
           tabs={['Log In', 'Sign Up']}
           selectedTab={selectedTab}
           onPressTab={changeTab}
+          Tabs
         />
         {renderedComponent}
       </View>

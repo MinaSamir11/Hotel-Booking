@@ -17,16 +17,23 @@ const Tabs = (props) => {
   };
 
   return (
-    <View style={{...styles.tabsContainer, ...props.ContainerStyle}}>
+    <View
+      style={[
+        styles.tabsContainer,
+        {borderBottomColor: props.Tabs ? Colors.borderLight : 'transparent'},
+        props.ContainerStyle,
+      ]}>
       {props.tabs.map((tabTitle, index) => {
         return (
           <TouchableOpacity
             key={index}
             style={[
               styles.tab,
-              props.selectedTab == index + 1 ? styles.activeTab : null,
-              props.deactivatedTabStyle,
-              props.selectedTab == index + 1 ? props.activatedTabStyle : null,
+              props.Tabs && [
+                props.selectedTab == index + 1 ? styles.activeTab : null,
+                props.deactivatedTabStyle,
+                props.selectedTab == index + 1 ? props.activatedTabStyle : null,
+              ],
             ]}
             activeOpacity={1}
             onPress={() => onPressTab(index + 1, false)}>
@@ -40,6 +47,19 @@ const Tabs = (props) => {
               ]}>
               {tabTitle}
             </Text>
+            {props.dots && (
+              <View
+                style={[
+                  props.selectedTab == index + 1
+                    ? styles.dotsActiveTab
+                    : {
+                        marginTop: 10,
+                        width: 7,
+                        height: 7,
+                      },
+                ]}
+              />
+            )}
           </TouchableOpacity>
         );
       })}
@@ -50,7 +70,6 @@ const styles = StyleSheet.create({
   tabsContainer: {
     flexDirection: 'row',
     width: '100%',
-    borderBottomColor: Colors.borderLight,
     borderBottomWidth: 4,
     height: 66,
   },
@@ -61,7 +80,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   activeTab: {
-    borderBottomWidth: 4,
+    borderBottomWidth: 3,
     borderBottomColor: Colors.MainColor,
     borderStyle: 'solid',
     marginBottom: Platform.OS === 'android' ? -4 : null,
@@ -71,6 +90,13 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     color: '#3E3E3E',
     fontWeight: '600',
+  },
+  dotsActiveTab: {
+    width: 7,
+    height: 7,
+    backgroundColor: Colors.MainColor,
+    borderRadius: 25,
+    marginTop: 10,
   },
 });
 

@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.MainColor,
     justifyContent: 'center',
   },
-  Logo: {width: 60, height: 60, alignSelf: 'center', marginTop: 15},
+  Logo: {width: '100%', height: '100%', alignSelf: 'center', marginTop: 15},
 });
 
 export default styles;

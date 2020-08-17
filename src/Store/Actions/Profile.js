@@ -2,41 +2,46 @@ import * as types from './types';
 
 import Api from '../../Utils/Api';
 
-export const GetUserProfile = (id) => {
+import BookingDetails from '../../Model/BookingDetails'; //get new instance
+
+export const getBookingDetails = (User) => {
   return async (dispatch) => {
     try {
       let response = await Api.get(
-        'http://192.168.1.3:4000',
-        `/Users?id=${id}`,
+        'http://192.168.1.3:3000',
+        `/Booking?userID=${User.userID}`,
       );
 
       if (response) {
-        if (response.data[0]) {
-          //if we get data then user found in our DB
+        if (response.data) {
+          let BookingDetailsList = [];
+          for (let i = 0; i < response.data.length; i++) {
+            BookingDetailsList.push(new BookingDetails(response.data[i]));
+          }
+
           dispatch(
-            setUserProfile({
-              ...response.data[0],
-              Status: response.status,
-            }),
-          );
-        } else {
-          dispatch(
-            setUserProfile({
-              Status: 401, //response.status in real response Api //wrong email or password
+            setBookingDetails({
+              data: BookingDetailsList,
+              Status: 200,
             }),
           );
         }
       }
     } catch (ex) {
-      dispatch(setUserProfile({Status: 50}));
+      dispatch(
+        setBookingDetails({
+          data: [],
+          Status: 50,
+        }),
+      );
       console.log('Ex', ex);
     }
   };
 };
 
-const setUserProfile = (userState) => {
+const setBookingDetails = (BookingResponse) => {
   return {
-    userData: userState,
-    type: types.GET_USERPROFILE,
+    BookingResponse: BookingResponse,
+    type: types.GET_BOOKING_DETAILS,
   };
 };

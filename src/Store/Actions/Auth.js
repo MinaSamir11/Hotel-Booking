@@ -43,22 +43,76 @@ const setUserProfile = (userState) => {
   };
 };
 
+export const SignUpAuth = (Account) => {
+  return async (dispatch) => {
+    try {
+      let CheckUserNameRequest = await Api.get(
+        'http://192.168.1.3:3000',
+        `/Users?UserName=${Account.UserName}`,
+      ); // we here check username if exist or not to not conflict with other users. in real api, makes these validations
+
+      if (CheckUserNameRequest) {
+        if (CheckUserNameRequest.data[0]) {
+          //if we get data then user found in our DB
+          dispatch(
+            setUserProfile({
+              Status: 409,
+            }),
+          );
+        } else {
+          let CheckEmailRequest = await Api.get(
+            'http://192.168.1.3:3000',
+            `/Users?Email=${Account.Email}`,
+          ); // we here check email if exist or not to not conflict with other users. in real api, makes these validations
+          if (CheckEmailRequest) {
+            if (CheckEmailRequest.data[0]) {
+              dispatch(
+                setUserProfile({
+                  Status: 422,
+                }),
+              );
+            } else {
+              /// user not found create user
+              let response = await Api.post(
+                'http://192.168.1.3:3000',
+                `/Users`,
+                Account,
+              );
+              if (response) {
+                if (response.data) {
+                  dispatch(
+                    setUserProfile({
+                      ...response.data,
+                      Status: 201,
+                    }),
+                  );
+                  storeData(response.data);
+                }
+              }
+            }
+          }
+        }
+      }
+    } catch (ex) {
+      dispatch(setUserProfile({Status: 50}));
+    }
+  };
+};
+
 const storeData = async (value) => {
   try {
     const jsonValue = JSON.stringify(value);
     await AsyncStorage.setItem('com.Hotel.userInfo', jsonValue);
-    let userInfo = await getData();
-    console.log('userInfo Async Storage', userInfo);
   } catch (e) {
     // saving error
   }
 };
 
-const getData = async () => {
-  try {
-    const jsonValue = await AsyncStorage.getItem('com.Hotel.userInfo');
-    return jsonValue != null ? JSON.parse(jsonValue) : null;
-  } catch (e) {
-    // error reading value
-  }
-};
+// const getData = async () => {
+//   try {
+//     const jsonValue = await AsyncStorage.getItem('com.Hotel.userInfo');
+//     return jsonValue != null ? JSON.parse(jsonValue) : null;
+//   } catch (e) {
+//     // error reading value
+//   }
+// };

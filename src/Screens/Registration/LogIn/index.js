@@ -1,6 +1,6 @@
 import React, {useState, useReducer, useEffect, useCallback} from 'react';
 
-import {View, Image, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 
 import Styles from './styles';
 
@@ -14,9 +14,10 @@ import {useSelector, useDispatch} from 'react-redux';
 
 import * as Auth from '../../../Store/Actions/Auth';
 
-const LogIn = (props) => {
-  const dispatch = useDispatch();
+import * as RootNavigation from '../../../Navigation/RootNavigation';
 
+const LogIn = () => {
+  const dispatch = useDispatch();
   const UserInfo = useSelector((state) => state.Auth.UserInfo);
 
   let [LoadingModalVisible, IsLoadingModalVisible] = useState(false);
@@ -24,6 +25,10 @@ const LogIn = (props) => {
   let [PopupModel, setVisiabiltyPopUp] = useState(false);
 
   let [MessagePopUp, setMessagePopUp] = useState('');
+
+  let [secureTextIcon, setsecureTextIcon] = useState('eye-off-outline');
+
+  let [secureText, setsecureText] = useState(true);
 
   const setUserProfile = (userState) => {
     return {
@@ -36,20 +41,14 @@ const LogIn = (props) => {
     if (UserInfo.Status == 200) {
       IsLoadingModalVisible(false);
       dispatch(setUserProfile({...UserInfo, Status: 0}));
-
-      // props.navigation.dispatch(StackActions.replace('TabBottomNavigator'));
-      console.log('Logged');
+      RootNavigation.navigate('OnBoarding');
     } else if (UserInfo.Status == 50) {
       IsLoadingModalVisible(false);
-
       setMessagePopUp('No internet Connection');
-
       setVisiabiltyPopUp(true);
     } else if (UserInfo.Status == 401) {
       IsLoadingModalVisible(false);
-
       setMessagePopUp('wrong email or password');
-
       setVisiabiltyPopUp(true);
     }
   }, [UserInfo]);
@@ -172,11 +171,20 @@ const LogIn = (props) => {
           <Input
             Error={formState.Account.ErrorPassword}
             ErrorTitle={'In-valid Password'}
-            secureTextEntry
+            secureTextEntry={secureText}
             maxLength={35}
             PlaceHolder={'Password'}
             onChangeText={(text) => OnChangePassword(text)}
-            InputStyle={[Styles.InputStyle]}
+            InputStyle={Styles.InputStyle}
+            IconName={secureTextIcon}
+            changeIcon={() => {
+              setsecureText(!secureText);
+              if (secureText) {
+                setsecureTextIcon('eye-outline');
+              } else {
+                setsecureTextIcon('eye-off-outline');
+              }
+            }}
           />
         </View>
         <Button

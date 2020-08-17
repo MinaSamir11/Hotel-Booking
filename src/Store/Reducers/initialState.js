@@ -3,6 +3,13 @@ export default {
     UserInfo: {},
   },
   Profile: {
-    UserProfile: null,
+    BookingDetails: [],
+    StatusBookingDetails: null,
+  },
+  Places: {
+    HotelsDetails: [],
+    HotelDescription: {},
+    StatusHotelsDetails: null,
+    StatusHotelDescription: null,
   },
 };

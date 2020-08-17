@@ -9,8 +9,8 @@ const styles = StyleSheet.create({
   },
   ContainerHeader: {zIndex: 5, overflow: 'visible'},
   ProfilePic: {
-    width: 90,
-    height: 90,
+    width: 120,
+    height: 120,
     backgroundColor: '#000',
     borderRadius: 100,
     alignSelf: 'center',
@@ -76,7 +76,31 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#3E3E3E',
     fontWeight: 'bold',
+    textAlign: 'center',
   },
+  containerContent: {flex: 1, marginTop: 40},
+  containerHeader: {
+    flex: 1,
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 40,
+    backgroundColor: '#FAFAFA',
+    borderRadius: 20,
+  },
+  headerContent: {
+    marginTop: '60%',
+  },
+  Modal: {
+    backgroundColor: '#FAFAFA',
+    marginTop: '60%',
+    borderRadius: 20,
+  },
+  LoginBtn: {borderRadius: 28.5, marginTop: 30, width: 325, height: 57},
+
+  HeaderTitle: {textAlign: 'left', color: '#3E3E3E', letterSpacing: 0.5},
+  ContainerTitle: {alignSelf: 'flex-start', justifyContent: 'flex-start'},
+  ContainerHeader: {backgroundColor: '#E5E5E5'},
 });
 
 export default styles;

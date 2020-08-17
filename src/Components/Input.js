@@ -1,6 +1,14 @@
 import React, {useState} from 'react';
 
-import {TextInput, StyleSheet, View, Text} from 'react-native';
+import {
+  TextInput,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
+
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Input = React.memo(
   ({
@@ -14,6 +22,8 @@ const Input = React.memo(
     KEY,
     ErrorTitle,
     multiline,
+    changeIcon,
+    IconName,
   }) => {
     const [Value, OnTextChange] = useState('');
 
@@ -23,7 +33,7 @@ const Input = React.memo(
     };
 
     return (
-      <View>
+      <View style={styles.Container}>
         <TextInput
           multiline={multiline ? multiline : false}
           secureTextEntry={secureTextEntry ? secureTextEntry : false}
@@ -36,6 +46,11 @@ const Input = React.memo(
           value={Value}
           onChangeText={textChangeHandler}
         />
+        {IconName && (
+          <TouchableOpacity style={styles.iconContainer} onPress={changeIcon}>
+            <Icon size={25} color={'red'} name={IconName} />
+          </TouchableOpacity>
+        )}
         {Error && <Text style={styles.ErrorTxt}>{ErrorTitle}</Text>}
       </View>
     );
@@ -43,6 +58,11 @@ const Input = React.memo(
 );
 
 const styles = StyleSheet.create({
+  Container: {
+    alignContent: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
   textInput: {
     backgroundColor: '#f1f1f1',
     marginStart: 30,
@@ -53,6 +73,23 @@ const styles = StyleSheet.create({
     color: '#BD0325',
     marginStart: 40,
     letterSpacing: 0.7,
+  },
+  iconContainer: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    alignContent: 'center',
+    alignSelf: 'flex-end',
+    right: '15%',
+  },
+  lockIcon: {
+    resizeMode: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    width: 24,
+    height: 24,
   },
 });
 
