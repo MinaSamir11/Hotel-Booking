@@ -43,6 +43,16 @@
       "vicinity": "dummy",
       "startdate": "dummy",
       "enddate": "dummy"
+    },
+    {
+      "userID": "5e808ea71fd9400dc009031ade8",
+      "place_id": "ChIJN6dJCtNAWBQRidN8hdlX__k",
+      "hotelName": "Sofitel Cairo Nile El Gezirah",
+      "photoURL": "CmRaAAAAmbacY3Y0UFljY7_eqhtCswTCLUlcnxSv4RV5hyX3Oj5QaJM9II8fkb690gAol2cXiStilGPqhuZJfPlKN8DkcjLtV6MMyrlT4R8zL5KSddXqdzHCtD5OBlMUBbQxv_MHEhBsHTRY1G6g3kmcmdp_XmqVGhRI3z6voKUPiEpZY5pe4UYAKy4BFw",
+      "vicinity": "3 El Thawra Council St Zamalek Downtown, El Orman Giza",
+      "startdate": "2020-08-19",
+      "enddate": "2020-08-25",
+      "id": "Ly5WNGL"
     }
   ]
 }
